@@ -7,6 +7,7 @@ export interface NawyRoute {
   description?: string;
   cta?: string;
   keywords?: string[];
+  aliases?: string[];
   status?: RouteStatus;
 }
 
