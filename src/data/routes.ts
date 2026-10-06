@@ -4,7 +4,11 @@ import type { NawyRoute, RoutesFile } from "../types";
 
 function fromFile(data: RoutesFile): NawyRoute[] {
   return Object.entries(data)
-    .map(([slug, value]) => ({ slug: slug.trim().toLowerCase(), ...value }))
+    .map(([slug, value]) => ({
+      ...value,
+      slug: slug.trim().toLowerCase(),
+      aliases: (value.aliases ?? []).map((alias) => alias.trim().toLowerCase()).filter(Boolean)
+    }))
     .filter((route) => route.slug && /^[-a-z0-9]+$/i.test(route.slug) && /^https?:\/\//i.test(route.url));
 }
 
