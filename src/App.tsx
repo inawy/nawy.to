@@ -84,6 +84,7 @@ export default function App() {
             value={slug}
             onChange={setSlug}
             onOpen={() => setLauncherOpen(true)}
+            onClose={() => setLauncherOpen(false)}
             onGo={go}
           />
         </div>
