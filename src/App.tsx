@@ -4,6 +4,15 @@ import { loadRoutes } from "./data/routes";
 import { findRoute, getPathSlug, openRoute } from "./lib/navigation";
 import type { NawyRoute } from "./types";
 
+function routeGlyph(slug: string): string {
+  if (slug === "app") return "•";
+  if (slug === "game") return "✦";
+  if (slug === "note") return "✎";
+  if (slug === "today") return "◷";
+  if (slug === "do") return "✓";
+  return "↗";
+}
+
 export default function App() {
   const [routes, setRoutes] = useState<NawyRoute[]>([]);
   const [slug, setSlug] = useState("");
@@ -26,7 +35,10 @@ export default function App() {
     return () => { cancelled = true; };
   }, []);
 
-  const activeRoutes = useMemo(() => routes.filter((route) => route.status !== "coming-soon"), [routes]);
+  const activeRoutes = useMemo(
+    () => routes.filter((route) => route.status !== "coming-soon"),
+    [routes]
+  );
   const selected = findRoute(activeRoutes, slug);
 
   function go() {
@@ -38,44 +50,71 @@ export default function App() {
     <main className="app-shell">
       <div className="ambient ambient-one" aria-hidden="true" />
       <div className="ambient ambient-two" aria-hidden="true" />
+
       <section className="portal" aria-labelledby="portal-title">
         <header className="brand-lockup">
           <div className="brand-mark" aria-hidden="true"><span /></div>
-          <div><p className="brand-name">Nawy.to</p><p className="brand-kicker">بوابة ناوي</p></div>
+          <div className="brand-copy">
+            <p className="brand-name">Nawy.to</p>
+            <p className="brand-kicker">بوابة ناوي</p>
+          </div>
+          <span className="status-dot" aria-hidden="true" />
         </header>
 
         <div className="hero-copy">
-          <p className="eyebrow">من هنا تبدأ الطريق</p>
-          <h1 id="portal-title">كل ناوي<br /><span>في طريقه.</span></h1>
-          <p className="intro">بوابة بسيطة للوصول إلى منتجات وخدمات ناوي من مكان واحد.</p>
+          <p className="eyebrow"><span /> طريقك إلى ناوي</p>
+          <h1 id="portal-title">كل ناوي<br /><span>في مكان واحد.</span></h1>
+          <p className="intro">بوابة بسيطة للوصول إلى منتجات وخدمات ناوي، بسرعة ومن غير تعقيد.</p>
         </div>
 
         <div className="route-area">
+          <div className="route-label">
+            <span>اختر بوابتك</span>
+            <span className="route-hint">اسحب أو استخدم الأسهم</span>
+          </div>
+
           <RoutePicker routes={activeRoutes} value={slug} onChange={setSlug} />
+
+          <div className="selected-meta">
+            <p>{selected?.description ?? (slug ? "المسار غير موجود حاليًا." : "اختر مسارًا أو اكتب واحدًا.")}</p>
+            {selected && <span>/{selected.slug}</span>}
+          </div>
+
           <button className="go-button" type="button" onClick={go} disabled={loading || !selected}>
-            <span>اذهب</span><span aria-hidden="true">←</span>
+            <span>{loading ? "جاري التحميل…" : "فتح البوابة"}</span>
+            <span className="go-arrow" aria-hidden="true">↗</span>
           </button>
-          <p className="selected-description">
-            {selected?.description ?? (slug ? "المسار غير موجود حاليًا." : "اختر مسارًا أو اكتب واحدًا.")}
-          </p>
         </div>
 
         <nav className="route-list" aria-label="بوابات ناوي">
-          {activeRoutes.map((route) => (
-            <button
-              key={route.slug}
-              className={route.slug === slug ? "route-chip is-active" : "route-chip"}
-              type="button"
-              onClick={() => setSlug(route.slug)}
-              title={route.description ?? route.label}
-            >
-              <span>{route.label}</span><small>/{route.slug}</small>
-            </button>
-          ))}
+          <div className="section-heading">
+            <span>بوابات ناوي</span>
+            <span>{activeRoutes.length} {activeRoutes.length === 1 ? "بوابة" : "بوابات"}</span>
+          </div>
+
+          <div className="route-grid">
+            {activeRoutes.map((route) => (
+              <button
+                key={route.slug}
+                className={route.slug === slug ? "route-card is-active" : "route-card"}
+                type="button"
+                onClick={() => setSlug(route.slug)}
+                title={route.description ?? route.label}
+                aria-pressed={route.slug === slug}
+              >
+                <span className="route-icon" aria-hidden="true">{routeGlyph(route.slug)}</span>
+                <span className="route-card-copy">
+                  <strong>{route.label}</strong>
+                  <small>nawy.to/{route.slug}</small>
+                </span>
+                <span className="route-card-arrow" aria-hidden="true">↗</span>
+              </button>
+            ))}
+          </div>
         </nav>
 
         <footer className="footer-row">
-          <span>{source === "local" ? "متاح محليًا" : source === "network" ? "محدّث" : "نسخة افتراضية"}</span>
+          <span><i /> {source === "local" ? "يعمل بدون اتصال" : source === "network" ? "محدّث الآن" : "وضع احتياطي"}</span>
           <span>بسيط. سريع. لناوي.</span>
         </footer>
       </section>
