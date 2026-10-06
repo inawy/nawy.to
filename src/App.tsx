@@ -81,7 +81,7 @@ export default function App() {
           </p>
           <h1 className="max-w-2xl text-[clamp(3rem,9vw,6.2rem)] font-black leading-[.92] tracking-[-.075em]">
             ناوي على إيه؟
-            <span className="mt-3 block text-white/35">قولها وابدأ.</span>
+            <span className="mt-3 block text-white/35"></span>
           </h1>
           <p className="mt-6 max-w-lg text-sm font-medium leading-8 text-white/45 sm:text-[15px]">
             تطبيقات ناوي اللي تساعدك تقول، تكتب، تلعب، وتحقق اللي نفسك تعمله.
