@@ -33,7 +33,7 @@ export function RoutePicker({ routes, value, onChange }: RoutePickerProps) {
     event.currentTarget.setPointerCapture(event.pointerId);
   }
 
-  function handlePointerUp(event: React.PointerEvent<HTMLDivElement>) {
+  function handlePointerUp(event: PointerEvent<HTMLDivElement>) {
     if (pointerId.current !== event.pointerId || startX.current === null) return;
 
     const delta = event.clientX - startX.current;
@@ -49,7 +49,7 @@ export function RoutePicker({ routes, value, onChange }: RoutePickerProps) {
     }
   }
 
-  function handlePointerCancel(event: React.PointerEvent<HTMLDivElement>) {
+  function handlePointerCancel(event: PointerEvent<HTMLDivElement>) {
     if (pointerId.current !== event.pointerId) return;
     startX.current = null;
     pointerId.current = null;
