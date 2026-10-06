@@ -3,12 +3,35 @@
     "url": "https://nawy.app/",
     "label": "ناوي",
     "description": "مساحتك الشخصية لنواياك وأهدافك",
+    "cta": "ابدأ نواياك",
+    "status": "active"
+  },
+  "note": {
+    "url": "https://inawy.github.io/nawy-notes/",
+    "label": "ناوي نوت",
+    "description": "روح دوّن ملاحظاتك وخليها معك",
+    "cta": "روح دوّن ملاحظاتك",
     "status": "active"
   },
   "game": {
     "url": "https://nawy.app/game",
-    "label": "العب مع ناوي 🎮",
-    "description": "استراحة خفيفة من ناوي",
+    "label": "ناوي رن",
+    "description": "خد استراحة والعب مع ناوي 🎮",
+    "cta": "روح العب مع ناوي",
     "status": "active"
+  },
+  "do": {
+    "url": "https://nawy.to/do",
+    "label": "ناوي دو",
+    "description": "روح حقق اللي ناوي عليه",
+    "cta": "روح حقق نيتك",
+    "status": "coming-soon"
+  },
+  "today": {
+    "url": "https://nawy.to/today",
+    "label": "ناوي توداي",
+    "description": "يومك مع ناوي، ببساطة",
+    "cta": "شوف يومك",
+    "status": "coming-soon"
   }
 }
