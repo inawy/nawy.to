@@ -60,28 +60,27 @@ export default function App() {
 
       <section className="relative mx-auto flex min-h-[calc(100vh-1.5rem)] w-full max-w-3xl flex-col overflow-hidden rounded-[28px] border border-white/[0.07] bg-white/[0.025] px-5 py-6 shadow-[0_30px_100px_rgba(0,0,0,.38)] backdrop-blur-2xl sm:min-h-[calc(100vh-3rem)] sm:rounded-[36px] sm:px-10 sm:py-9 lg:px-14">
         <header className="flex items-center gap-3">
-          <div className="nawy-logo-mark" aria-hidden="true">
-            <span className="nawy-logo-dot" />
-            <span className="nawy-logo-check" />
-          </div>
-          <div className="min-w-0">
-            <div className="text-[15px] font-black tracking-[-0.03em]">ناوي</div>
-            <div className="text-[10px] font-semibold text-white/35" dir="ltr">Nawy.to</div>
+          <div className="flex items-center gap-3" dir="ltr" aria-label="Nawy.to">
+            <div className="nawy-logo-mark" aria-hidden="true">
+              <span className="nawy-logo-dot" />
+              <span className="nawy-logo-check" />
+            </div>
+            <div className="leading-none">
+              <div className="flex items-baseline text-[17px] font-black tracking-[-0.06em]">
+                <span>nawy</span><span className="text-[#3D7BFF]">./</span>
+              </div>
+              <div className="mt-1 text-[9px] font-bold tracking-[0.12em] text-white/30">NAWY.TO</div>
+            </div>
           </div>
           <div className="mr-auto flex items-center gap-2 text-[10px] font-semibold text-white/30">
             <span className="h-1.5 w-1.5 rounded-full bg-[#3D7BFF] shadow-[0_0_12px_rgba(61,123,255,.8)]" />
-            مساحتك، من هنا
+            من هنا
           </div>
         </header>
 
-        <div className="mt-14 sm:mt-20">
-          <p className="mb-3 flex items-center gap-2 text-[11px] font-extrabold text-[#7FA5FF]">
-            <span className="h-1 w-1 rounded-full bg-[#3D7BFF]" />
-            ناوي معك
-          </p>
-          <h1 className="max-w-2xl text-[clamp(3rem,9vw,6.2rem)] font-black leading-[.92] tracking-[-.075em]">
+        <div className="mt-16 sm:mt-24">
+          <h1 className="max-w-2xl text-[clamp(3.2rem,9vw,6.2rem)] font-black leading-[.95] tracking-[-.08em]">
             ناوي على إيه؟
-            <span className="mt-3 block text-white/35"></span>
           </h1>
           <p className="mt-6 max-w-lg text-sm font-medium leading-8 text-white/45 sm:text-[15px]">
             تطبيقات ناوي اللي تساعدك تقول، تكتب، تلعب، وتحقق اللي نفسك تعمله.
@@ -154,7 +153,7 @@ export default function App() {
             <i className="h-1 w-1 rounded-full bg-[#3D7BFF]" />
             {source === "local" ? "يعمل بدون اتصال" : source === "network" ? "محدّث الآن" : "وضع احتياطي"}
           </span>
-          <span>أقول → أحقق → أشوف</span>
+          <span dir="ltr">nawy./</span>
         </footer>
       </section>
     </main>
