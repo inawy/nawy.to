@@ -485,7 +485,7 @@ button:focus-visible, input:focus-visible {
 }
 
 @media (max-width: 640px) {
-  .nawy-page { padding: 10px; }
+  .nawy-page { padding: 0; }
   .nawy-stage {
     min-height: 100svh;
     padding: 20px 16px 18px;
