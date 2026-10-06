@@ -7,13 +7,13 @@
   text-rendering: optimizeLegibility;
   --nawy-blue: #3d7bff;
   --nawy-blue-soft: #7fa5ff;
-  --bg: #070b14;
-  --surface-strong: rgba(8, 13, 24, .84);
-  --line: rgba(255, 255, 255, .075);
-  --line-blue: rgba(61, 123, 255, .22);
+  --bg: #080b12;
+  --surface-strong: rgba(12, 17, 28, .88);
+  --line: rgba(255, 255, 255, .065);
+  --line-blue: rgba(61, 123, 255, .18);
   --text: #f6f8ff;
-  --muted: #9ca7bd;
-  --muted-2: #69748a;
+  --muted: #929caf;
+  --muted-2: #657085;
 }
 * { box-sizing: border-box; }
 html, body, #root { min-height: 100%; margin: 0; }
@@ -21,7 +21,7 @@ html { background: var(--bg); }
 body {
   min-width: 320px;
   min-height: 100vh;
-  background: radial-gradient(circle at 50% -14%, rgba(61,123,255,.16), transparent 30rem), radial-gradient(circle at 90% 90%, rgba(61,123,255,.045), transparent 24rem), var(--bg);
+  background: radial-gradient(circle at 50% -18%, rgba(61,123,255,.11), transparent 28rem), var(--bg);
   color: var(--text);
 }
 button, input { font: inherit; }
