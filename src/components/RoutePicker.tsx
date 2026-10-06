@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type PointerEvent, type WheelEvent } from "react";
 import type { NawyRoute } from "../types";
 import { normalizeSlug } from "../lib/navigation";
 
@@ -24,7 +24,7 @@ export function RoutePicker({ routes, value, onChange }: RoutePickerProps) {
     onChange(routes[nextIndex].slug);
   }
 
-  function handlePointerDown(event: React.PointerEvent<HTMLDivElement>) {
+  function handlePointerDown(event: PointerEvent<HTMLDivElement>) {
     if (event.pointerType === "mouse" && event.button !== 0) return;
     if ((event.target as HTMLElement).closest("button, input, select, textarea, a")) return;
 
@@ -58,7 +58,7 @@ export function RoutePicker({ routes, value, onChange }: RoutePickerProps) {
     }
   }
 
-  function handleWheel(event: React.WheelEvent<HTMLDivElement>) {
+  function handleWheel(event: WheelEvent<HTMLDivElement>) {
     if ((event.target as HTMLElement).closest("input, button, select, textarea, a")) return;
     if (Math.abs(event.deltaY) < 8) return;
 
