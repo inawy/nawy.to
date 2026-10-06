@@ -17,6 +17,7 @@ export const defaultRoutes: NawyRoute[] = [
     description: "روح دوّن ملاحظاتك وخليها معك",
     cta: "روح دوّن ملاحظاتك",
     keywords: ["نوت", "ملاحظات", "ملاحظة", "اكتب", "دوّن", "note", "notes"],
+    aliases: ["notes"],
     status: "active"
   },
   {
