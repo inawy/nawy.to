@@ -22,16 +22,28 @@ async function readLocal(): Promise<NawyRoute[]> {
   return records.map(({ order: _order, ...route }) => route);
 }
 
+async function tryReadLocal(): Promise<NawyRoute[]> {
+  try {
+    return await readLocal();
+  } catch {
+    return [];
+  }
+}
+
 export async function loadRoutes(): Promise<{ routes: NawyRoute[]; source: "network" | "local" | "fallback" }> {
   try {
     const response = await fetch("/links.json", { headers: { Accept: "application/json" }, cache: "no-store" });
     if (!response.ok) throw new Error(`Route manifest request failed: ${response.status}`);
     const routes = fromFile((await response.json()) as RoutesFile);
     if (!routes.length) throw new Error("Route manifest contains no usable routes.");
-    await saveLocal(routes);
+    try {
+      await saveLocal(routes);
+    } catch {
+      // The network manifest is still valid even if local persistence is unavailable.
+    }
     return { routes, source: "network" };
   } catch {
-    const local = await readLocal();
+    const local = await tryReadLocal();
     return local.length ? { routes: local, source: "local" } : { routes: defaultRoutes, source: "fallback" };
   }
 }
