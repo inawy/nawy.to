@@ -4,6 +4,7 @@
     "label": "ناوي",
     "description": "مساحتك الشخصية لنواياك وأهدافك",
     "cta": "ابدأ نواياك",
+    "keywords": ["ناوي", "نوايا", "نية", "نواياي", "هدف", "أهداف", "app", "home"],
     "status": "active"
   },
   "note": {
@@ -11,13 +12,15 @@
     "label": "ناوي نوت",
     "description": "روح دوّن ملاحظاتك وخليها معك",
     "cta": "روح دوّن ملاحظاتك",
+    "keywords": ["نوت", "ملاحظات", "ملاحظة", "اكتب", "دوّن", "note", "notes"],
     "status": "active"
   },
   "game": {
     "url": "https://nawy.app/game",
-    "label": "ناوي رن",
-    "description": "خد استراحة والعب مع ناوي 🎮",
+    "label": "ناوي جيم",
+    "description": "خد استراحة والعب مع ناوي",
     "cta": "روح العب مع ناوي",
+    "keywords": ["جيم", "لعب", "العب", "استراحة", "game", "play"],
     "status": "active"
   },
   "do": {
@@ -25,6 +28,7 @@
     "label": "ناوي دو",
     "description": "روح حقق اللي ناوي عليه",
     "cta": "روح حقق نيتك",
+    "keywords": ["دو", "حقق", "إنجاز", "عمل", "do"],
     "status": "coming-soon"
   },
   "today": {
@@ -32,6 +36,7 @@
     "label": "ناوي توداي",
     "description": "يومك مع ناوي، ببساطة",
     "cta": "شوف يومك",
+    "keywords": ["اليوم", "يومي", "توداي", "today", "calendar"],
     "status": "coming-soon"
   }
 }
