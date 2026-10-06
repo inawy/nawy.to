@@ -5,6 +5,7 @@ export interface NawyRoute {
   url: string;
   label: string;
   description?: string;
+  cta?: string;
   status?: RouteStatus;
 }
 
