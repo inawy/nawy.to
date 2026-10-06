@@ -10,7 +10,9 @@ export function getPathSlug(pathname = window.location.pathname): string {
 
 export function findRoute(routes: NawyRoute[], slug: string): NawyRoute | undefined {
   const normalized = normalizeSlug(slug);
-  return routes.find((route) => route.slug === normalized);
+  return routes.find(
+    (route) => route.slug === normalized || (route.aliases ?? []).some((alias) => alias === normalized)
+  );
 }
 
 export function openRoute(route: NawyRoute): void {
