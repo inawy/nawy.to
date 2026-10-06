@@ -44,11 +44,12 @@ export function RoutePicker({ routes, value, onChange, onOpen, onClose, onGo }: 
     setActiveIndex(index >= 0 ? index : 0);
   }, [open, results, value]);
 
-  function select(route: NawyRoute) {
+  function select(route: NawyRoute, navigate = false) {
     onChange(route.slug);
     setQuery("");
     setOpen(false);
     onClose();
+    if (navigate) onGo(route);
   }
 
   function move(delta: number) {
@@ -82,8 +83,7 @@ export function RoutePicker({ routes, value, onChange, onOpen, onClose, onGo }: 
       event.preventDefault();
       const route = results[activeIndex] ?? routes[selectedIndex];
       if (route) {
-        select(route);
-        onGo(route);
+        select(route, true);
       }
     }
   }
@@ -141,7 +141,7 @@ export function RoutePicker({ routes, value, onChange, onOpen, onClose, onGo }: 
           autoCorrect="off"
           spellCheck={false}
           aria-label="البحث في ناوي"
-          placeholder={selected ? selected.label : "اكتب أو اختار من ناوي..."}
+          placeholder="اكتب أو اختار من ناوي..."
         />
         <kbd className="launcher-key">⌘K</kbd>
         <button className="launcher-go" type="button" onMouseDown={(event) => event.preventDefault()} onClick={onGo} aria-label="فتح الوجهة الحالية">↗</button>
@@ -156,7 +156,7 @@ export function RoutePicker({ routes, value, onChange, onOpen, onClose, onGo }: 
       {open && (
         <div className="launcher-results" role="listbox" aria-label="وجهات ناوي">
           {results.length ? results.map((route, index) => (
-            <button key={route.slug} className={`launcher-result ${route.slug === value || index === activeIndex ? "is-active" : ""}`} type="button" onMouseDown={(event) => event.preventDefault()} onClick={() => select(route)} role="option" aria-selected={route.slug === value}>
+            <button key={route.slug} className={`launcher-result ${route.slug === value || index === activeIndex ? "is-active" : ""}`} type="button" onMouseDown={(event) => event.preventDefault()} onClick={() => select(route, true)} role="option" aria-selected={route.slug === value}>
               <span className="result-dot" aria-hidden="true" />
               <span className="result-copy"><strong>{route.label}</strong><small>{route.description}</small></span>
               <span className="result-slug" dir="ltr">/{route.slug}</span>
