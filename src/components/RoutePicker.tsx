@@ -10,6 +10,7 @@ interface RoutePickerProps {
 
 export function RoutePicker({ routes, value, onChange }: RoutePickerProps) {
   const startX = useRef<number | null>(null);
+  const pointerId = useRef<number | null>(null);
   const foundIndex = routes.findIndex((route) => route.slug === value);
   const index = foundIndex >= 0 ? foundIndex : 0;
 
@@ -23,17 +24,55 @@ export function RoutePicker({ routes, value, onChange }: RoutePickerProps) {
     onChange(routes[nextIndex].slug);
   }
 
+  function handlePointerDown(event: React.PointerEvent<HTMLDivElement>) {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    if ((event.target as HTMLElement).closest("button, input, select, textarea, a")) return;
+
+    startX.current = event.clientX;
+    pointerId.current = event.pointerId;
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }
+
+  function handlePointerUp(event: React.PointerEvent<HTMLDivElement>) {
+    if (pointerId.current !== event.pointerId || startX.current === null) return;
+
+    const delta = event.clientX - startX.current;
+    if (Math.abs(delta) > 40) {
+      event.preventDefault();
+      move(delta < 0 ? 1 : -1);
+    }
+
+    startX.current = null;
+    pointerId.current = null;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  }
+
+  function handlePointerCancel(event: React.PointerEvent<HTMLDivElement>) {
+    if (pointerId.current !== event.pointerId) return;
+    startX.current = null;
+    pointerId.current = null;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  }
+
+  function handleWheel(event: React.WheelEvent<HTMLDivElement>) {
+    if ((event.target as HTMLElement).closest("input, button, select, textarea, a")) return;
+    if (Math.abs(event.deltaY) < 8) return;
+
+    event.preventDefault();
+    move(event.deltaY > 0 ? 1 : -1);
+  }
+
   return (
     <div
       className="route-picker"
-      onWheel={(event) => { event.preventDefault(); move(event.deltaY > 0 ? 1 : -1); }}
-      onPointerDown={(event) => { startX.current = event.clientX; }}
-      onPointerUp={(event) => {
-        if (startX.current === null) return;
-        const delta = event.clientX - startX.current;
-        if (Math.abs(delta) > 40) move(delta < 0 ? 1 : -1);
-        startX.current = null;
-      }}
+      onWheel={handleWheel}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerCancel}
       aria-label="اختيار بوابة من بوابات ناوي"
     >
       <button className="picker-arrow" type="button" onClick={() => move(-1)} aria-label="البوابة السابقة">‹</button>
