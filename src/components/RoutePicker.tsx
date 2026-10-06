@@ -7,7 +7,8 @@ interface RoutePickerProps {
   value: string;
   onChange: (slug: string) => void;
   onOpen: () => void;
-  onGo: () => void;
+  onClose: () => void;
+  onGo: (route?: NawyRoute) => void;
 }
 
 function scoreRoute(route: NawyRoute, query: string): number {
@@ -21,7 +22,7 @@ function scoreRoute(route: NawyRoute, query: string): number {
   return 0;
 }
 
-export function RoutePicker({ routes, value, onChange, onOpen, onGo }: RoutePickerProps) {
+export function RoutePicker({ routes, value, onChange, onOpen, onClose, onGo }: RoutePickerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const startX = useRef<number | null>(null);
   const pointerId = useRef<number | null>(null);
@@ -47,6 +48,7 @@ export function RoutePicker({ routes, value, onChange, onOpen, onGo }: RoutePick
     onChange(route.slug);
     setQuery("");
     setOpen(false);
+    onClose();
   }
 
   function move(delta: number) {
@@ -72,6 +74,7 @@ export function RoutePicker({ routes, value, onChange, onOpen, onGo }: RoutePick
       event.preventDefault();
       setQuery("");
       setOpen(false);
+      onClose();
       inputRef.current?.blur();
       return;
     }
@@ -80,7 +83,7 @@ export function RoutePicker({ routes, value, onChange, onOpen, onGo }: RoutePick
       const route = results[activeIndex] ?? routes[selectedIndex];
       if (route) {
         select(route);
-        onGo();
+        onGo(route);
       }
     }
   }
@@ -132,7 +135,7 @@ export function RoutePicker({ routes, value, onChange, onOpen, onGo }: RoutePick
           onFocus={() => { setOpen(true); onOpen(); }}
           onChange={(event) => { setQuery(normalizeSlug(event.target.value)); setOpen(true); }}
           onKeyDown={handleKeyDown}
-          onBlur={() => window.setTimeout(() => setOpen(false), 140)}
+          onBlur={() => window.setTimeout(() => { setOpen(false); onClose(); }, 140)}
           inputMode="text"
           autoCapitalize="none"
           autoCorrect="off"
