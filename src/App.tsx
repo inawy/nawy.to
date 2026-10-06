@@ -62,15 +62,15 @@ export default function App() {
         </header>
 
         <div className="hero-copy">
-          <p className="eyebrow"><span /> طريقك إلى ناوي</p>
-          <h1 id="portal-title">كل ناوي<br /><span>في مكان واحد.</span></h1>
-          <p className="intro">بوابة بسيطة للوصول إلى منتجات وخدمات ناوي، بسرعة ومن غير تعقيد.</p>
+          <p className="eyebrow"><span /> ناوي معك</p>
+          <h1 id="portal-title">قولها.<br /><span>ناوي عليها.</span></h1>
+          <p className="intro">تطبيقات ناوي اللي تساعدك تقول، تكتب، تلعب، وتحقق اللي نفسك تعمله.</p>
         </div>
 
         <div className="route-area">
           <div className="route-label">
-            <span>اختر بوابتك</span>
-            <span className="route-hint">اسحب أو استخدم الأسهم</span>
+            <span>ناوي على إيه؟</span>
+            <span className="route-hint">اسحب واختار</span>
           </div>
 
           <RoutePicker routes={activeRoutes} value={slug} onChange={setSlug} />
@@ -81,15 +81,15 @@ export default function App() {
           </div>
 
           <button className="go-button" type="button" onClick={go} disabled={loading || !selected}>
-            <span>{loading ? "جاري التحميل…" : "فتح البوابة"}</span>
+            <span>{loading ? "لحظة…" : selected?.cta ?? "اختار ناوي"}</span>
             <span className="go-arrow" aria-hidden="true">↗</span>
           </button>
         </div>
 
-        <nav className="route-list" aria-label="بوابات ناوي">
+        <nav className="route-list" aria-label="تطبيقات ناوي">
           <div className="section-heading">
-            <span>بوابات ناوي</span>
-            <span>{activeRoutes.length} {activeRoutes.length === 1 ? "بوابة" : "بوابات"}</span>
+            <span>تطبيقات ناوي</span>
+            <span>{activeRoutes.length} {activeRoutes.length === 1 ? "تطبيق" : "تطبيقات"}</span>
           </div>
 
           <div className="route-grid">
@@ -105,7 +105,7 @@ export default function App() {
                 <span className="route-icon" aria-hidden="true">{routeGlyph(route.slug)}</span>
                 <span className="route-card-copy">
                   <strong>{route.label}</strong>
-                  <small>nawy.to/{route.slug}</small>
+                  <small>{route.slug === "app" ? "نواياك وأهدافك" : route.slug === "note" ? "ملاحظاتك معك" : route.slug === "game" ? "استراحة خفيفة" : "قريبًا مع ناوي"}</small>
                 </span>
                 <span className="route-card-arrow" aria-hidden="true">↗</span>
               </button>
@@ -115,7 +115,7 @@ export default function App() {
 
         <footer className="footer-row">
           <span><i /> {source === "local" ? "يعمل بدون اتصال" : source === "network" ? "محدّث الآن" : "وضع احتياطي"}</span>
-          <span>بسيط. سريع. لناوي.</span>
+          <span>أقول → أحقق → أشوف</span>
         </footer>
       </section>
     </main>
