@@ -16,8 +16,9 @@ export default function App() {
       if (cancelled) return;
       setRoutes(result.routes);
       setSource(result.source);
-      const requested = findRoute(result.routes, getPathSlug());
-      const first = result.routes.find((route) => route.status !== "coming-soon");
+      const activeRoutes = result.routes.filter((route) => route.status !== "coming-soon");
+      const requested = findRoute(activeRoutes, getPathSlug());
+      const first = activeRoutes[0];
       setSlug(requested?.slug ?? first?.slug ?? "");
       setLoading(false);
       if (requested) openRoute(requested);
