@@ -14,8 +14,9 @@ interface RoutePickerProps {
 function scoreRoute(route: NawyRoute, query: string): number {
   if (!query) return 0;
   const q = query.toLowerCase().trim();
-  const haystack = [route.slug, route.label, route.description ?? "", ...(route.keywords ?? [])].join(" ").toLowerCase();
+  const haystack = [route.slug, route.label, route.description ?? "", ...(route.keywords ?? []), ...(route.aliases ?? [])].join(" ").toLowerCase();
   if (route.slug.toLowerCase() === q) return 100;
+  if ((route.aliases ?? []).some((alias) => alias.toLowerCase() === q)) return 92;
   if (route.label.toLowerCase() === q) return 95;
   if (haystack.startsWith(q)) return 80;
   if (haystack.includes(q)) return 60;
