@@ -31,7 +31,7 @@ React + TypeScript + Vite + Tailwind CSS + Dexie/IndexedDB + PWA.
 
 ## Local-first
 
-يتم جلب `links.json` وتخزين آخر نسخة محليًا في IndexedDB. عند فقد الاتصال، يستخدم التطبيق النسخة المحلية، ومع أول تشغيل يوجد fallback داخلي للمسارات الأساسية.
+يتم جلب `links.json` وتخزين آخر نسخة محليًا في IndexedDB. عند فقد الاتصال، يستخدم التطبيق النسخة المحلية، ومع أول تشغيل بدون اتصال تُستخدم نسخة مدمجة تُقرأ من `public/links.json` نفسه وقت الـbuild (`src/data/defaultRoutes.ts`)، فلا يوجد ما يُحدَّث في مكانين.
 
 ## إضافة مسار جديد
 
