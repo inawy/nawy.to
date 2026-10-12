@@ -19,7 +19,11 @@
 - **المظهر:** فاتح وداكن حسب إعداد الجهاز، وزر لتغييره يتحفظ في المتصفح.
 - **الخط:** IBM Plex Sans Arabic من Google Fonts، ويتخزّن للعمل بدون اتصال.
 
-بعد الـbuild بيتم نسخ `dist/index.html` إلى `dist/404.html` (`scripts/postbuild.mjs`)، فأي مسار غير معروف على GitHub Pages يفتح التطبيق نفسه ويحدد الشاشة المناسبة.
+## بعد الـbuild (`scripts/postbuild.mjs`)
+
+- **تحقق من `links.json`:** أي خطأ (slug غلط، alias مكرر، رابط active بيشاور على nawy.to نفسه، اسم بيتعارض مع ملف في الموقع) بيوقف الـbuild فلا يتم النشر. القواعد في `scripts/manifest.mjs` واختباراتها في `scripts/manifest.test.mjs` (`npm test`).
+- **صفحة لكل slug وalias:** بيتولّد `dist/<slug>/index.html`، فالرابط بيرجع HTTP 200 بدل 404 (مهم لمراقبة الروابط ومعاينات واتساب وسلاك). فيها بيانات المعاينة (og tags)، وتحويل `<noscript>` للي مفعّل JavaScript عنده معطّل.
+- **`404.html`:** نسخة من `index.html`، فأي مسار غير معروف يفتح التطبيق نفسه ويعرض شاشة "مفيش رابط".
 
 ## Stack
 
