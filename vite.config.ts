@@ -10,7 +10,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.svg", "pwa-192.svg", "pwa-512.svg", "robots.txt", "links.json"],
+      includeAssets: ["favicon.svg", "pwa-192.svg", "pwa-512.svg", "robots.txt", "links.json", "fonts/*.woff2"],
       manifest: {
         name: "Nawy.to — بوابة ناوي",
         short_name: "Nawy.to",
@@ -30,15 +30,6 @@ export default defineConfig({
       workbox: {
         navigateFallback: "/index.html",
         runtimeCaching: [
-          {
-            // The Arabic UI font, so the app looks the same offline.
-            urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
-            handler: "StaleWhileRevalidate",
-            options: {
-              cacheName: "nawy-to-fonts",
-              expiration: { maxEntries: 12, maxAgeSeconds: 60 * 60 * 24 * 365 }
-            }
-          },
           {
             urlPattern: /\/links\.json$/,
             handler: "NetworkFirst",
