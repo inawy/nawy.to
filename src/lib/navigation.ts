@@ -15,6 +15,18 @@ export function findRoute(routes: NawyRoute[], slug: string): NawyRoute | undefi
   );
 }
 
+export function isComingSoon(route: NawyRoute): boolean {
+  return route.status === "coming-soon";
+}
+
+export function hostOf(url: string): string {
+  try {
+    return new URL(url).host;
+  } catch {
+    return url;
+  }
+}
+
 export function openRoute(route: NawyRoute): void {
   window.location.assign(route.url);
 }

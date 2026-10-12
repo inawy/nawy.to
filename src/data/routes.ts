@@ -34,7 +34,9 @@ async function tryReadLocal(): Promise<NawyRoute[]> {
   }
 }
 
-export async function loadRoutes(): Promise<{ routes: NawyRoute[]; source: "network" | "local" | "fallback" }> {
+export type RouteSource = "network" | "local" | "fallback";
+
+export async function loadRoutes(): Promise<{ routes: NawyRoute[]; source: RouteSource }> {
   try {
     const response = await fetch("/links.json", { headers: { Accept: "application/json" }, cache: "no-store" });
     if (!response.ok) throw new Error(`Route manifest request failed: ${response.status}`);
