@@ -10,7 +10,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.svg", "pwa-192.svg", "pwa-512.svg", "robots.txt", "links.json", "fonts/*.woff2"],
+      includeAssets: ["favicon.ico", "favicon.svg", "favicon-*.png", "apple-touch-icon.png", "android-chrome-*.png", "robots.txt", "links.json", "fonts/*.woff2"],
       manifest: {
         name: "Nawy.to — بوابة ناوي",
         short_name: "Nawy.to",
@@ -20,11 +20,11 @@ export default defineConfig({
         start_url: "/",
         scope: "/",
         display: "standalone",
-        theme_color: "#0F1217",
-        background_color: "#0F1217",
+        theme_color: "#0B1B3A",
+        background_color: "#0B1B3A",
         icons: [
-          { src: "/pwa-192.svg", sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
-          { src: "/pwa-512.svg", sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
+          { src: "/android-chrome-192x192.png", sizes: "192x192", type: "image/png", purpose: "any maskable" },
+          { src: "/android-chrome-512x512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" }
         ]
       },
       workbox: {
