@@ -17,12 +17,17 @@ function Icon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export const ArrowIcon = (props: SVGProps<SVGSVGElement>) => (
-  <Icon {...props}><path d="M19 12H5" /><path d="m12 19-7-7 7-7" /></Icon>
+export const SearchIcon = (props: SVGProps<SVGSVGElement>) => (
+  <Icon {...props}><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></Icon>
 );
 
-export const EnterIcon = (props: SVGProps<SVGSVGElement>) => (
-  <Icon {...props}><path d="M20 4v7a4 4 0 0 1-4 4H4" /><path d="m9 10-5 5 5 5" /></Icon>
+export const CloseIcon = (props: SVGProps<SVGSVGElement>) => (
+  <Icon {...props}><path d="M18 6 6 18" /><path d="m6 6 12 12" /></Icon>
+);
+
+/** Points right: the field is a left-to-right address, so "go" follows the reading direction of the URL. */
+export const GoIcon = (props: SVGProps<SVGSVGElement>) => (
+  <Icon {...props}><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></Icon>
 );
 
 export const MoonIcon = (props: SVGProps<SVGSVGElement>) => (

@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FocusEvent, type KeyboardEvent, type MouseEvent } from "react";
 import type { NawyRoute } from "../types";
 import { hostOf, isComingSoon, normalizeSlug } from "../lib/navigation";
 import { normalizeQuery, searchRoutes } from "../lib/search";
-import { ArrowIcon, EnterIcon } from "./icons";
+import { CloseIcon, GoIcon, SearchIcon } from "./icons";
 
 interface LauncherProps {
   routes: NawyRoute[] | null;
@@ -15,38 +15,44 @@ interface LauncherProps {
 export function Launcher({ routes, query, onQueryChange, onOpen, onMissing }: LauncherProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [activeSlug, setActiveSlug] = useState("");
+  const [open, setOpen] = useState(false);
 
   const results = useMemo(() => (routes ? searchRoutes(routes, query) : []), [routes, query]);
   const selectable = useMemo(() => results.filter((route) => !isComingSoon(route)), [results]);
   const active = selectable.find((route) => route.slug === activeSlug) ?? selectable[0];
   const activeId = active?.slug;
+  const showPanel = open && !!routes;
 
   // A keyboard-first launcher: "/" or Ctrl/⌘+K jumps to the field from anywhere.
   useEffect(() => {
     function handleShortcut(event: globalThis.KeyboardEvent) {
       const target = event.target as HTMLElement | null;
       const typing = !!target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable);
-      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
-        event.preventDefault();
+      const focusField = () => {
         inputRef.current?.focus();
         inputRef.current?.select();
+        setOpen(true);
+      };
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        focusField();
       } else if (event.key === "/" && !typing && !event.ctrlKey && !event.metaKey && !event.altKey) {
         event.preventDefault();
-        inputRef.current?.focus();
+        focusField();
       }
     }
     window.addEventListener("keydown", handleShortcut);
     return () => window.removeEventListener("keydown", handleShortcut);
   }, []);
 
-  // Focus the field on desktop only; on touch screens it would open the keyboard before the person asked.
+  // Desktop only, and without opening the list: on touch screens it would raise the keyboard unasked.
   useEffect(() => {
     if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) inputRef.current?.focus();
   }, []);
 
   useEffect(() => {
-    if (activeId) document.getElementById(`route-${activeId}`)?.scrollIntoView({ block: "nearest" });
-  }, [activeId]);
+    if (showPanel && activeId) document.getElementById(`route-${activeId}`)?.scrollIntoView({ block: "nearest" });
+  }, [showPanel, activeId]);
 
   function move(delta: number) {
     if (!selectable.length) return;
@@ -63,109 +69,141 @@ export function Launcher({ routes, query, onQueryChange, onOpen, onMissing }: La
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
-    if (event.key === "ArrowDown") {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
-      move(1);
-    } else if (event.key === "ArrowUp") {
-      event.preventDefault();
-      move(-1);
+      if (!open) setOpen(true);
+      else move(event.key === "ArrowDown" ? 1 : -1);
     } else if (event.key === "Enter") {
       event.preventDefault();
       submit();
     } else if (event.key === "Escape") {
       event.preventDefault();
       if (query) onQueryChange("");
-      else inputRef.current?.blur();
+      setOpen(false);
     }
   }
 
+  // Close the list when focus leaves the whole launcher, not when it moves between its own parts.
+  function handleBlur(event: FocusEvent<HTMLDivElement>) {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpen(false);
+  }
+
+  // Clicking padding or text inside the card must not steal focus from the field.
+  function keepFocus(event: MouseEvent<HTMLDivElement>) {
+    if (!(event.target as HTMLElement).closest("input, button, a")) event.preventDefault();
+  }
+
   return (
-    <div className="launcher">
-      <div className="field" dir="ltr">
-        <span className="field__prefix" aria-hidden="true">nawy.to/</span>
-        <input
-          ref={inputRef}
-          className="field__input"
-          dir="auto"
-          type="text"
-          role="combobox"
-          aria-label="اسم الوجهة"
-          aria-expanded="true"
-          aria-controls="routes"
-          aria-autocomplete="list"
-          aria-activedescendant={activeId ? `route-${activeId}` : undefined}
-          placeholder="note"
-          value={query}
-          onChange={(event) => {
-            setActiveSlug("");
-            onQueryChange(event.target.value);
-          }}
-          onKeyDown={handleKeyDown}
-          autoCapitalize="none"
-          autoCorrect="off"
-          autoComplete="off"
-          spellCheck={false}
-          enterKeyHint="go"
-        />
-        <button type="button" className="field__go" onClick={submit} aria-label="افتح">
-          <EnterIcon />
-          <span className="field__go-label">افتح</span>
-        </button>
+    <div className="launcher" onBlur={handleBlur}>
+      <div className="launcher__slot">
+        <div className="card" data-open={showPanel ? "true" : undefined} onMouseDown={keepFocus}>
+          <div className="field" dir="ltr">
+            <SearchIcon className="field__icon" />
+            <span className="field__prefix" aria-hidden="true">nawy.to/</span>
+            <input
+              ref={inputRef}
+              className="field__input"
+              dir="auto"
+              type="text"
+              role="combobox"
+              aria-label="اسم الوجهة"
+              aria-expanded={showPanel}
+              aria-controls="routes"
+              aria-autocomplete="list"
+              aria-activedescendant={showPanel && activeId ? `route-${activeId}` : undefined}
+              placeholder="note"
+              value={query}
+              onChange={(event) => {
+                setActiveSlug("");
+                setOpen(true);
+                onQueryChange(event.target.value);
+              }}
+              onClick={() => setOpen(true)}
+              onKeyDown={handleKeyDown}
+              autoCapitalize="none"
+              autoCorrect="off"
+              autoComplete="off"
+              spellCheck={false}
+              enterKeyHint="go"
+            />
+            {query && (
+              <button
+                type="button"
+                className="field__btn"
+                aria-label="امسح"
+                onClick={() => {
+                  onQueryChange("");
+                  inputRef.current?.focus();
+                }}
+              >
+                <CloseIcon />
+              </button>
+            )}
+            <button type="button" className="field__go" onClick={submit} aria-label="افتح">
+              <GoIcon />
+            </button>
+          </div>
+
+          {showPanel && results.length > 0 && (
+            <div className="panel" id="routes" role="listbox" aria-label="وجهات ناوي">
+              {results.map((route) => {
+                if (isComingSoon(route)) {
+                  return (
+                    <div key={route.slug} className="option option--soon" role="option" aria-disabled="true" aria-selected="false">
+                      <span className="option__text">
+                        <strong>{route.label}</strong>
+                        <span>{route.description}</span>
+                      </span>
+                      <span className="badge">قريبًا</span>
+                    </div>
+                  );
+                }
+                const isActive = route.slug === activeId;
+                return (
+                  <a
+                    key={route.slug}
+                    id={`route-${route.slug}`}
+                    className="option"
+                    href={route.url}
+                    role="option"
+                    aria-selected={isActive}
+                    data-active={isActive ? "true" : undefined}
+                    onMouseMove={() => { if (!isActive) setActiveSlug(route.slug); }}
+                  >
+                    <span className="option__text">
+                      <strong>{route.label}</strong>
+                      <span>{route.description}</span>
+                    </span>
+                    <span className="option__meta" dir="ltr">
+                      <span>/{route.slug}</span>
+                      {isActive && <small>{hostOf(route.url)}</small>}
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
+          )}
+
+          {showPanel && results.length === 0 && (
+            <div className="panel panel--empty">مفيش وجهة بالاسم ده. جرّب اسم تاني.</div>
+          )}
+        </div>
       </div>
 
-      {!routes && (
-        <div className="routes" aria-busy="true" aria-label="جاري تحميل الوجهات">
-          {[0, 1, 2].map((index) => <div key={index} className="route route--skeleton" aria-hidden="true" />)}
-        </div>
-      )}
-
-      {routes && results.length > 0 && (
-        <div className="routes" id="routes" role="listbox" aria-label="وجهات ناوي">
-          {results.map((route) => {
-            if (isComingSoon(route)) {
-              return (
-                <div key={route.slug} className="route route--soon" role="option" aria-disabled="true" aria-selected="false">
-                  <span className="route__text">
-                    <strong>{route.label}</strong>
-                    <span>{route.description}</span>
-                  </span>
-                  <span className="badge">قريبًا</span>
-                </div>
-              );
-            }
-            const isActive = route.slug === activeId;
-            return (
-              <a
-                key={route.slug}
-                id={`route-${route.slug}`}
-                className="route"
-                href={route.url}
-                role="option"
-                aria-selected={isActive}
-                data-active={isActive ? "true" : undefined}
-                onMouseMove={() => { if (!isActive) setActiveSlug(route.slug); }}
-              >
-                <span className="route__text">
-                  <strong>{route.label}</strong>
-                  <span>{route.description}</span>
-                </span>
-                <span className="route__meta" dir="ltr">
-                  <span className="route__slug">/{route.slug}</span>
-                  {isActive && <span className="route__host">{hostOf(route.url)}</span>}
-                </span>
-                {isActive && <ArrowIcon className="route__arrow" />}
-              </a>
-            );
-          })}
-        </div>
-      )}
-
-      {routes && results.length === 0 && (
-        <div className="empty">
-          <p>مفيش وجهة بالاسم ده.</p>
-          <button type="button" className="btn btn--ghost" onClick={() => onQueryChange("")}>امسح البحث</button>
-        </div>
-      )}
+      <nav className="chips" aria-label="وجهات ناوي">
+        {routes
+          ? routes.map((route) =>
+              isComingSoon(route) ? (
+                <button key={route.slug} type="button" className="chip chip--soon" onClick={() => onOpen(route)}>
+                  {route.label}
+                  <small>قريبًا</small>
+                </button>
+              ) : (
+                <a key={route.slug} className="chip" href={route.url}>{route.label}</a>
+              )
+            )
+          : [0, 1, 2].map((index) => <span key={index} className="chip chip--skeleton" aria-hidden="true" />)}
+      </nav>
     </div>
   );
 }

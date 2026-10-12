@@ -67,11 +67,11 @@ export function StatusScreen(props: StatusProps) {
       {props.suggestions.length > 0 && (
         <>
           <p className="screen__text">يمكن تقصد واحد من دول:</p>
-          <div className="routes">
-            {props.suggestions.map((route, index) => (
-              <a key={route.slug} className="route" href={route.url} data-active={index === 0 ? "true" : undefined}>
-                <span className="route__text"><strong>{route.label}</strong></span>
-                <span className="route__meta" dir="ltr"><span className="route__slug">/{route.slug}</span></span>
+          <div className="chips">
+            {props.suggestions.map((route) => (
+              <a key={route.slug} className="chip" href={route.url}>
+                {route.label}
+                <small dir="ltr">/{route.slug}</small>
               </a>
             ))}
           </div>

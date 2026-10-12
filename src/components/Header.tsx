@@ -13,16 +13,15 @@ function Logo() {
   );
 }
 
-const STATUS: Record<RouteSource | "loading", string> = {
-  loading: "بيحمّل…",
-  network: "محدّث الآن",
+/** Only worth a word when something is unusual: the list came from this device, not the network. */
+const OFFLINE_NOTE: Partial<Record<RouteSource, string>> = {
   local: "يعمل بدون اتصال",
-  fallback: "جاهز"
+  fallback: "يعمل بدون اتصال"
 };
 
 export function Header({ source }: { source: RouteSource | null }) {
   const [theme, setTheme] = useState<Theme>(currentTheme);
-  const state = source ?? "loading";
+  const note = source ? OFFLINE_NOTE[source] : undefined;
 
   function toggleTheme() {
     const next: Theme = theme === "dark" ? "light" : "dark";
@@ -37,10 +36,12 @@ export function Header({ source }: { source: RouteSource | null }) {
         <span className="brand__word">nawy<span>.to</span></span>
       </a>
       <div className="header__tools">
-        <span className="status" data-state={state} role="status">
-          <i aria-hidden="true" />
-          {STATUS[state]}
-        </span>
+        {note && (
+          <span className="status" role="status">
+            <i aria-hidden="true" />
+            {note}
+          </span>
+        )}
         <button type="button" className="icon-btn" onClick={toggleTheme} aria-label={theme === "dark" ? "المظهر الفاتح" : "المظهر الداكن"}>
           {theme === "dark" ? <SunIcon /> : <MoonIcon />}
         </button>

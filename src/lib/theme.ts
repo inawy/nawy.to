@@ -1,7 +1,7 @@
 export type Theme = "light" | "dark";
 
 const STORAGE_KEY = "nawy-theme";
-const THEME_COLOR: Record<Theme, string> = { light: "#F4F5F7", dark: "#0B0E13" };
+const THEME_COLOR: Record<Theme, string> = { light: "#FFFFFF", dark: "#0F1217" };
 
 /** The theme applied by the inline script in index.html before first paint. */
 export function currentTheme(): Theme {
