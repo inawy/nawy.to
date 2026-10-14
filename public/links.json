@@ -16,6 +16,14 @@
     "aliases": ["notes"],
     "status": "active"
   },
+  "focus": {
+    "url": "https://inawy.github.io/nawy-focus/",
+    "label": "ناوي فوكس",
+    "description": "جلسة تركيز بسيطة، محلية أولاً",
+    "cta": "ابدأ التركيز",
+    "keywords": ["فوكس", "تركيز", "مؤقت", "بومودورو", "focus", "timer", "pomodoro"],
+    "status": "active"
+  },
   "game": {
     "url": "https://nawy.app/game",
     "label": "ناوي جيم",

@@ -6,6 +6,7 @@
 
 - `nawy.to/app` → `https://nawy.app/`
 - `nawy.to/note` (و`/notes`) → `https://inawy.github.io/nawy-notes/`
+- `nawy.to/focus` → `https://inawy.github.io/nawy-focus/`
 - `nawy.to/game` → `https://nawy.app/game`
 - `nawy.to/do` و`nawy.to/today` → قريبًا
 
