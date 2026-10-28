@@ -8,7 +8,8 @@
 - `nawy.to/note` (و`/notes`) → `https://inawy.github.io/nawy-notes/`
 - `nawy.to/focus` → `https://inawy.github.io/nawy-focus/`
 - `nawy.to/game` → `https://nawy.app/game`
-- `nawy.to/do` و`nawy.to/today` → قريبًا
+- `nawy.to/do` (و`/todo`) → `https://do.nawy.app/`
+- `nawy.to/today` → قريبًا
 
 المسارات تُدار من `public/links.json`، ولا توجد صفحة HTML منفصلة لكل slug.
 

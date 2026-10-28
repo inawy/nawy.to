@@ -33,12 +33,13 @@
     "status": "active"
   },
   "do": {
-    "url": "https://nawy.to/do",
+    "url": "https://do.nawy.app/",
     "label": "ناوي دو",
     "description": "روح حقق اللي ناوي عليه",
     "cta": "روح حقق نيتك",
-    "keywords": ["دو", "حقق", "إنجاز", "عمل", "do"],
-    "status": "coming-soon"
+    "keywords": ["دو", "حقق", "إنجاز", "عمل", "مهام", "نية", "todo", "to-do", "do"],
+    "aliases": ["todo"],
+    "status": "active"
   },
   "today": {
     "url": "https://nawy.to/today",
